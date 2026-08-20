@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<!--
+  =========================================================================
+  КРАБ-САДОВНИК — сама игра (открывается отдельно и встроена в главный
+  сайт через <iframe> на странице ../index.html, раздел "Играть").
+
+  Куда класть файлы игры, чтобы всё заработало:
+    game/img/<имя>.png   — все спрайты (краб, водоросли, ёж, крюк, кит,
+                            иконки магазина, листик, звук, фон и т.д.),
+                            имена файлов уже прописаны ниже в тегах <img>
+                            и в game.js/style.css — просто положите
+                            картинки с такими же именами в эту папку.
+    game/music/bg.mp3    — фоновая музыка (кнопка звука в левом верхнем углу).
+
+  Без этих файлов игра всё равно полностью играбельна (краб двигается,
+  листики считаются, магазин и столкновения работают) — просто вместо
+  картинок будут пустые/битые иконки, пока вы не добавите свои файлы.
+  =========================================================================
+-->
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Краб‑садовник</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div id="game">
+    <div id="sound-button"><img src="./img/sound-on.png" id="sound-icon" width="20"></div>
+    <div id="shop-button">
+      <img src="./img/shop.png" alt="shop">
+    </div>
+    <div id="shop-overlay"></div>
+
+    <div id="shop-window">
+      <div class="shop-item-wrapper" id="speed-boost-wrapper">
+        <img id="speed-boost" src="./img/speed.png" class="shop-item">
+        <span class="shop-cost">30</span>
+      </div>
+      <div class="shop-item-wrapper" id="double-leaf-boost-wrapper">
+        <img id="double-leaf-boost" src="./img/2x.png" class="shop-item">
+        <span class="shop-cost">50</span>
+      </div>
+      <div class="shop-item-wrapper" id="auto-trim-boost-wrapper">
+        <img id="auto-trim-boost" src="./img/trim.png" class="shop-item">
+        <span class="shop-cost">70</span>
+      </div>
+      <div class="shop-item-wrapper" id="shield-boost-wrapper">
+        <img id="shield-boost" src="./img/shield.png" class="shop-item">
+        <span class="shop-cost">40</span>
+      </div>
+      <div class="shop-item-wrapper" id="boot-boost-wrapper">
+        <img id="boot-boost" src="./img/Boot.png" class="shop-item">
+        <span class="shop-cost">35</span>
+      </div>
+    </div>
+
+    <div id="game-over-overlay">
+      <div id="game-over-window">
+        <p id="game-over-title">Игра окончена!</p>
+        <p id="game-over-subtitle">Краба поймал крюк</p>
+        <button id="restart-btn">Начать заново</button>
+      </div>
+    </div>
+
+    <img id="crab" src="./img/krab.png" alt="crab">
+
+
+    <img class="seaweed" src="./img/vodorosl'.png" data-height="300" alt="seaweed">
+
+    <img class="seaweed" src="./img/vodorosl'.png" data-height="300" alt="seaweed">
+    <img class="seaweed" src="./img/vodorosl'.png" data-height="300" alt="seaweed">
+    <img class="seaweed" src="./img/vodorosl'.png" data-height="300" alt="seaweed">
+
+    <img id="urchin1" class="urchin" src="./img/urchin.png" alt="urchin">
+    <img id="urchin2" class="urchin" src="./img/urchin.png" alt="urchin">
+    <img id="hook" src="./img/hook.png" class="hook">
+
+    <div id="leaf-counter">
+      <img src="./img/leaf.png" id="leaf-icon" alt="leaf">
+      <span id="leaf-value">0</span>
+    </div>
+    <img id="whale" src="./img/kit.png" alt="whale">
+
+  </div>
+
+ 
+  <audio id="bg-music" src="./music/bg.mp3" loop></audio>
+   <script src="game.js"></script>
+</body>
+
+</html>

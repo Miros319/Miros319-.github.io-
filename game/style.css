@@ -1,0 +1,310 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: system-ui, sans-serif;
+}
+
+body {
+  background: #021b3a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+#game {
+  position: relative;
+  width: 800px;
+  height: 450px;
+  background: url("./img/background.png") center/cover no-repeat; /* фон-картинка */
+  border: 4px solid #0ff;
+  overflow: hidden;
+}
+
+
+
+
+/* Краб */
+#crab {
+  position: absolute;
+  width: 80px;   /* подбери под размер картинки */
+  bottom: 80px;
+  left: 100px;
+  user-select: none;
+  pointer-events: none; /* чтобы клики проходили сквозь */
+}
+
+
+/* Глазки */
+#crab::before,
+#crab::after {
+  content: "";
+  position: absolute;
+  top: -12px;
+  width: 10px;
+  height: 10px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 0 3px rgba(0,0,0,0.4);
+}
+#crab::before {
+  left: 12px;
+}
+#crab::after {
+  right: 12px;
+}
+
+.seaweed {
+  position: absolute;
+  bottom: 0;
+  width: 90px;
+  height: 20px;
+  user-select: none;
+  cursor: pointer;
+  animation: sway 2s ease-in-out infinite alternate;
+} 
+
+
+.seaweed:nth-child(2) { left: 380px; }
+.seaweed:nth-child(3) { left: 460px; }
+.seaweed:nth-child(4) { left: 540px; }
+
+@keyframes sway {
+  from { transform: rotate(-3deg); }
+  to   { transform: rotate(3deg); }
+}
+
+
+/* Инфо */
+#info {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  padding: 6px 10px;
+  background: rgba(0,0,0,0.4);
+  color: #fff;
+  font-size: 14px;
+  border-radius: 6px;
+}
+#leaf-counter {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0,0,0,0.4);
+  border: 2px solid #0ff;
+  padding: 6px 10px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#leaf-icon {
+  width: 28px;
+  height: 28px;
+  user-select: none;
+}
+
+#leaf-value {
+  color: #fff;
+  font-size: 20px;
+  font-weight: bold;
+}
+.urchin {
+  position: absolute;
+  bottom: 0;
+  width: 70px;
+  display: none; /* по умолчанию скрыты */
+  user-select: none;
+}
+#whale {
+  position: absolute;
+  top: 20px;
+  left: 0;
+  width: 200px; /* подбери размер */
+  height: auto;
+  user-select: none;
+  pointer-events: none;
+}
+#shop-button {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 60px;
+  height: 60px;
+  background: rgba(255,255,255,0.15);
+  border: 2px solid #0ff;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+}
+
+#shop-button img {
+  width: 40px;
+  height: 40px;
+  pointer-events: none;
+}
+/* затемнение */
+#shop-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.55);
+  display: none;
+  z-index: 5;
+}
+
+/* окно магазина */
+#shop-window {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 350px;
+  height: 300px;
+  transform: translate(-50%, -50%);
+  background: url("./img/SHOP3.png") center/cover no-repeat;
+  border: 3px solid #0ff;
+  border-radius: 12px;
+  display: none;
+  z-index: 6;
+  padding: 20px;
+  color: white;
+  text-align: center;
+}
+#shop-window {
+  display: none;
+  gap: 14px;
+  align-items: flex-end;
+  justify-content: center;
+}
+#shop-window.open {
+  display: flex;
+}
+
+.shop-item-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 138px;
+}
+
+.shop-item {
+  width: 40px;
+  height: 55px;
+  cursor: pointer;
+  transition: transform 0.2s, filter 0.2s, opacity 0.2s;
+}
+
+.shop-item:hover {
+  transform: scale(1.1);
+}
+
+.shop-cost {
+  margin-top: 4px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #9df9ff;
+  background: rgba(0,0,0,0.5);
+  padding: 1px 6px;
+  border-radius: 6px;
+}
+
+/* нельзя купить: не хватает листиков */
+.shop-item-wrapper.disabled .shop-item {
+  filter: grayscale(100%);
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+.shop-item-wrapper.disabled .shop-cost {
+  color: #ff8080;
+}
+
+/* буст активен прямо сейчас */
+.shop-item-wrapper.active .shop-item {
+  filter: drop-shadow(0 0 8px #00ff9d);
+  transform: scale(1.08);
+}
+.shop-item-wrapper.active .shop-cost {
+  color: #00ff9d;
+}
+
+/* -------- окно окончания игры -------- */
+#game-over-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.7);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+#game-over-window {
+  background: #062544;
+  border: 3px solid #0ff;
+  border-radius: 12px;
+  padding: 28px 36px;
+  text-align: center;
+  color: #fff;
+}
+
+#game-over-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+#game-over-subtitle {
+  font-size: 14px;
+  color: #9df9ff;
+  margin-bottom: 18px;
+}
+
+#restart-btn {
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px 22px;
+  border: none;
+  border-radius: 8px;
+  background: #0ff;
+  color: #021b3a;
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+
+#restart-btn:hover {
+  transform: scale(1.06);
+}
+.crab-shield {
+  filter: drop-shadow(0 0 15px #00eaff);
+}
+.hook {
+  position: absolute;
+  top: 0;
+  left: 200px;
+  width: 60px;
+  height: 120px;
+  pointer-events: none; /* чтобы не мешал кликам */
+  overflow: visible;
+}
+
+.hook-boot {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  bottom: -20px;
+  left: 10px;
+  pointer-events: none;
+  z-index: 9999; /* ← чтобы ботинок был поверх */
+}

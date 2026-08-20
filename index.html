@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<!--
+  =========================================================================
+  КРАБ-САДОВНИК — лендинг игры
+  =========================================================================
+  Структура проекта:
+    index.html      — разметка (этот файл)
+    css/style.css   — все стили
+    js/script.js    — вся интерактивность
+    images/         — папка для ваших картинок
+
+  КАК ВСТАВИТЬ СВОИ ИЗОБРАЖЕНИЯ:
+  1. Положите файлы в папку images/ (например images/hero.jpg).
+  2. Найдите нужный <img> ниже — у каждого есть комментарий
+     "ЗАМЕНИТЕ КАРТИНКУ" и понятный src="images/....jpg".
+  3. Просто поменяйте имя файла в src на своё — размеры подгонит CSS.
+  4. Если файла не найдётся, вместо сломанной иконки покажется
+     красивая заглушка-плейсхолдер (это делает js/script.js).
+  =========================================================================
+-->
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Краб-садовник — подводная аркада</title>
+  <meta name="description" content="Краб-садовник — браузерная аркада про краба, который стрижёт водоросли, собирает листики и уворачивается от ежей, крюка и кита.">
+
+  <!-- Шрифты Google Fonts (просто подключение шрифтов, не JS-библиотека) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Manrope:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ================= ПОДВОДНЫЕ ПУЗЫРЬКИ (генерируются в JS) ================= -->
+  <div class="bubble-field" id="bubbleField" aria-hidden="true"></div>
+
+  <!-- ================= ШАПКА / НАВИГАЦИЯ ================= -->
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a href="#top" class="logo">
+        <!-- Мини-краб как SVG-логотип -->
+        <svg class="logo-crab" viewBox="0 0 64 64" aria-hidden="true">
+          <ellipse cx="32" cy="36" rx="18" ry="13" fill="var(--color-shell)"/>
+          <path d="M14 30 C4 24 2 14 8 10 C12 20 18 24 22 27 Z" fill="var(--color-shell)"/>
+          <path d="M50 30 C60 24 62 14 56 10 C52 20 46 24 42 27 Z" fill="var(--color-shell)"/>
+          <circle cx="24" cy="32" r="3" fill="var(--color-abyss)"/>
+          <circle cx="40" cy="32" r="3" fill="var(--color-abyss)"/>
+        </svg>
+        <span>Краб-садовник</span>
+      </a>
+
+      <nav class="main-nav" id="mainNav">
+        <a href="#about">Об игре</a>
+        <a href="#gameplay">Геймплей</a>
+        <a href="#threats">Опасности</a>
+        <a href="#shop">Магазин</a>
+        <a href="#gallery">Скриншоты</a>
+      </nav>
+
+      <a href="#play" class="btn btn-primary btn-small header-cta">Играть</a>
+
+      <button class="burger" id="burgerBtn" aria-label="Открыть меню" aria-expanded="false" aria-controls="mainNav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- ================= HERO ================= -->
+    <section class="hero">
+      <!-- Покачивающиеся водоросли на дне экрана -->
+      <div class="kelp-row" aria-hidden="true">
+        <span class="kelp k1"></span>
+        <span class="kelp k2"></span>
+        <span class="kelp k3"></span>
+        <span class="kelp k4"></span>
+        <span class="kelp k5"></span>
+        <span class="kelp k6"></span>
+        <span class="kelp k7"></span>
+      </div>
+
+      <div class="wrap hero-inner">
+        <div class="hero-text">
+          <p class="eyebrow">Браузерная аркада • дно океана</p>
+          <h1>Стриги водоросли.<br>Собирай листики.<br><span class="accent">Уворачивайся от всего.</span></h1>
+          <p class="hero-lead">
+            Вы — краб-садовник. Ваш огород растёт прямо на морском дне,
+            а мешают вам морские ежи, рыболовный крюк и проплывающий кит.
+            Чем дольше вы держитесь — тем быстрее становится погоня.
+          </p>
+          <div class="hero-actions">
+            <a href="#play" class="btn btn-primary">Играть онлайн</a>
+            <a href="#gameplay" class="btn btn-ghost">Как играть →</a>
+          </div>
+          <ul class="hero-stats">
+            <li><strong>5</strong><span>бустов в магазине</span></li>
+            <li><strong>3</strong><span>вида угроз</span></li>
+            <li><strong>∞</strong><span>растущая сложность</span></li>
+          </ul>
+        </div>
+
+        <div class="hero-visual">
+          <!-- Рамка-«экран», в которую вставляется скриншот/gif геймплея -->
+          <div class="device-frame">
+            <div class="device-frame-bar"><span></span><span></span><span></span></div>
+            <!-- ЗАМЕНИТЕ КАРТИНКУ: скриншот или gif реального геймплея -->
+            <img
+              src="images/hero-gameplay.jpg"
+              data-placeholder-label="Скриншот геймплея"
+              data-placeholder-icon="🦀"
+              alt="Скриншот геймплея игры Краб-садовник"
+              class="framed-img"
+            >
+          </div>
+          <!-- Декоративный крупный краб рядом с рамкой -->
+          <svg class="hero-crab" viewBox="0 0 200 140" aria-hidden="true">
+            <ellipse cx="100" cy="80" rx="60" ry="42" fill="var(--color-shell)"/>
+            <ellipse cx="100" cy="70" rx="60" ry="38" fill="var(--color-shell-light)"/>
+            <path d="M46 66 C14 50 8 20 24 8 C34 34 50 44 62 52 Z" fill="var(--color-shell)" class="claw claw-left"/>
+            <path d="M154 66 C186 50 192 20 176 8 C166 34 150 44 138 52 Z" fill="var(--color-shell)" class="claw claw-right"/>
+            <circle cx="78" cy="70" r="8" fill="var(--color-abyss)"/>
+            <circle cx="122" cy="70" r="8" fill="var(--color-abyss)"/>
+            <circle cx="80" cy="68" r="3" fill="#fff"/>
+            <circle cx="124" cy="68" r="3" fill="#fff"/>
+            <path d="M60 110 L48 124 M78 116 L70 132 M100 118 L100 134 M122 116 L130 132 M140 110 L152 124"
+                  stroke="var(--color-shell-dark)" stroke-width="5" stroke-linecap="round" fill="none"/>
+          </svg>
+        </div>
+      </div>
+      <div class="hero-fade"></div>
+    </section>
+
+    <!-- ================= ОБ ИГРЕ ================= -->
+    <section class="section" id="about">
+      <div class="wrap about-grid">
+        <div class="about-text">
+          <p class="eyebrow">Сюжет</p>
+          <h2>Маленький сад на дне большого океана</h2>
+          <p>
+            Где-то на илистом дне, среди зарослей водорослей, живёт краб
+            с обострённым чувством порядка. Каждый день заросли
+            снова тянутся вверх — и каждый день он выходит их стричь,
+            собирая срезанные листики в свою кладовую.
+          </p>
+          <p>
+            Но огород редко бывает спокойным местом: колючие морские ежи
+            перекрывают дорожки, откуда ни возьмись падает рыболовный крюк,
+            а вдалеке проходит кит, чья волна может смести весь урожай за секунду.
+          </p>
+        </div>
+        <div class="about-media">
+          <!-- ЗАМЕНИТЕ КАРТИНКУ: арт или скриншот с крабом на грядке водорослей -->
+          <img
+            src="images/about-crab-garden.jpg"
+            data-placeholder-label="Арт: краб в саду водорослей"
+            data-placeholder-icon="🌿"
+            alt="Иллюстрация краба среди водорослей"
+            class="rounded-img reveal"
+          >
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= ГЕЙМПЛЕЙ / МЕХАНИКИ ================= -->
+    <section class="section section-alt" id="gameplay">
+      <div class="wrap">
+        <p class="eyebrow center">Механики</p>
+        <h2 class="center">Три вещи, которые вы делаете каждую секунду</h2>
+
+        <div class="card-grid mechanics-grid">
+          <article class="card reveal">
+            <div class="card-icon">✂️</div>
+            <h3>Стрижёте водоросли</h3>
+            <p>Водоросли постоянно отрастают заново — водите крабом рядом, чтобы подрезать их до того, как они перекроют весь огород.</p>
+          </article>
+          <article class="card reveal">
+            <div class="card-icon">🍃</div>
+            <h3>Собираете листики</h3>
+            <p>Каждый срезанный стебель оставляет листики — валюту игры. Копите их на ходу, не отвлекаясь от угроз.</p>
+          </article>
+          <article class="card reveal">
+            <div class="card-icon">🌀</div>
+            <h3>Уворачиваетесь</h3>
+            <p>Морские ежи стоят на месте и жалят при касании, крюк падает сверху по таймеру, а кит время от времени проходит через всю сцену.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= УГРОЗЫ И СЛОЖНОСТЬ ================= -->
+    <section class="section" id="threats">
+      <div class="wrap">
+        <p class="eyebrow center">Опасности дна</p>
+        <h2 class="center">Чем дольше вы играете — тем опаснее становится дно</h2>
+
+        <div class="threats-grid">
+          <article class="threat-card reveal">
+            <div class="threat-icon">🦔</div>
+            <h3>Морской ёж</h3>
+            <p>Неподвижная колючая ловушка. Не смертельна сама по себе, но крадёт время и место на грядке.</p>
+          </article>
+          <article class="threat-card reveal">
+            <div class="threat-icon">🪝</div>
+            <h3>Рыболовный крюк</h3>
+            <p>Опускается сверху с нарастающей скоростью. Поймает краба — игра окончена, но перезапуск в одну кнопку.</p>
+          </article>
+          <article class="threat-card reveal">
+            <div class="threat-icon">🐋</div>
+            <h3>Проплывающий кит</h3>
+            <p>Появляется на фоне и постепенно ускоряется вместе с крюком, поднимая напряжение всей партии.</p>
+          </article>
+        </div>
+
+        <!-- Шкала нарастающей сложности — «фирменный» визуальный элемент раздела -->
+        <div class="difficulty-gauge reveal" id="difficultyGauge">
+          <div class="gauge-labels">
+            <span>Начало забега</span>
+            <span>Через пару минут</span>
+            <span>Крюк и кит на пределе</span>
+          </div>
+          <div class="gauge-track">
+            <div class="gauge-fill" id="gaugeFill"></div>
+          </div>
+          <p class="gauge-caption">Скорость крюка и кита растёт со временем — расслабляться некогда.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= МАГАЗИН БУСТОВ ================= -->
+    <section class="section section-alt" id="shop">
+      <div class="wrap">
+        <p class="eyebrow center">Магазин</p>
+        <h2 class="center">Тратьте листики на апгрейды</h2>
+        <p class="section-lead center">Заработанные листики превращаются в постоянные бусты, которые меняют стиль прохождения.</p>
+
+        <div class="card-grid shop-grid">
+          <article class="shop-card reveal">
+            <div class="shop-icon">⚡</div>
+            <h3>Ускорение</h3>
+            <p>Краб двигается быстрее — легче убегать от крюка и китовой волны.</p>
+          </article>
+          <article class="shop-card reveal">
+            <div class="shop-icon">✨</div>
+            <h3>Удвоение добычи</h3>
+            <p>Каждый срезанный стебель приносит вдвое больше листиков.</p>
+          </article>
+          <article class="shop-card reveal">
+            <div class="shop-icon">🤖</div>
+            <h3>Автотримминг</h3>
+            <p>Ближайшие водоросли подстригаются сами, пока вы уворачиваетесь от угроз.</p>
+          </article>
+          <article class="shop-card reveal">
+            <div class="shop-icon">🛡️</div>
+            <h3>Щит от врагов</h3>
+            <p>Гасит одно столкновение с ежом или волной кита без урона.</p>
+          </article>
+          <article class="shop-card reveal">
+            <div class="shop-icon">🥾</div>
+            <h3>Защитный ботинок</h3>
+            <p>Даёт один бесплатный выход из захвата крюком — забег продолжается.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= ГАЛЕРЕЯ СКРИНШОТОВ ================= -->
+    <section class="section" id="gallery">
+      <div class="wrap">
+        <p class="eyebrow center">Галерея</p>
+        <h2 class="center">Как это выглядит на деле</h2>
+
+        <div class="gallery-grid">
+          <!-- ЗАМЕНИТЕ КАРТИНКИ: до 6 своих скриншотов ниже -->
+          <img src="images/screenshot-1.jpg" data-placeholder-label="Скриншот 1" data-placeholder-icon="🖼️" alt="Скриншот игры 1" class="gallery-img reveal">
+          <img src="images/screenshot-2.jpg" data-placeholder-label="Скриншот 2" data-placeholder-icon="🖼️" alt="Скриншот игры 2" class="gallery-img reveal">
+          <img src="images/screenshot-3.jpg" data-placeholder-label="Скриншот 3" data-placeholder-icon="🖼️" alt="Скриншот игры 3" class="gallery-img reveal">
+          <img src="images/screenshot-4.jpg" data-placeholder-label="Скриншот 4" data-placeholder-icon="🖼️" alt="Скриншот игры 4" class="gallery-img reveal">
+          <img src="images/screenshot-5.jpg" data-placeholder-label="Скриншот 5" data-placeholder-icon="🖼️" alt="Скриншот игры 5" class="gallery-img reveal">
+          <img src="images/screenshot-6.jpg" data-placeholder-label="Скриншот 6" data-placeholder-icon="🖼️" alt="Скриншот игры 6" class="gallery-img reveal">
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= ИГРА ПРЯМО НА СТРАНИЦЕ ================= -->
+    <section class="section play-section" id="play">
+      <div class="wrap">
+        <p class="eyebrow center">Играть</p>
+        <h2 class="center">Погружайтесь — игра прямо здесь</h2>
+        
+
+        <!--
+          Обёртка масштабирует игру (она рассчитана на 800×450px) под
+          ширину экрана посетителя — реальный размер и логика игры
+          не меняются, меняется только визуальный масштаб.
+          Масштабирование считает js/script.js, раздел 9.
+        -->
+        <div class="game-embed" id="gameEmbed">
+          <iframe
+            id="gameFrame"
+            src="game/index.html"
+            title="Краб-садовник — игра"
+            loading="lazy"
+          ></iframe>
+        </div>
+
+        <!-- запасной вариант, если браузер посетителя блокирует iframe к локальным файлам -->
+        <p class="cta-hint center">
+          Игра не отображается? Откройте её
+          <a href="game/index.html" target="_blank" rel="noopener">в отдельной вкладке</a>.
+        </p>
+
+        <div class="controls-legend reveal">
+          <h3 class="center">Управление</h3>
+          <ul>
+            <li><span class="key">WASD</span> / <span class="key">стрелки</span> — движение краба</li>
+            <li><span class="key">клик</span> по водоросли рядом с крабом — подстричь и получить листик</li>
+            <li><span class="key">Q</span> (удерживать) — отогнать морского ежа при касании</li>
+            <li><span class="key">🛍️</span> в углу игры — открыть магазин бустов (ставит игру на паузу)</li>
+            <li><span class="key">🔊</span> в углу игры — включить/выключить фоновую музыку</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= ФИНАЛЬНЫЙ CTA ================= -->
+    <section class="cta-section">
+      <div class="wrap cta-inner reveal">
+        <h2>Готовы понырять на дно?</h2>
+        <p>Одна попытка длится пару минут, а перезапуск после поимки крюком — одна кнопка.</p>
+        <a href="#play" class="btn btn-primary btn-large">К игре ↑</a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= ПОДВАЛ ================= -->
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <div class="logo footer-logo">
+        <svg class="logo-crab" viewBox="0 0 64 64" aria-hidden="true">
+          <ellipse cx="32" cy="36" rx="18" ry="13" fill="var(--color-shell)"/>
+        </svg>
+        <span>Краб-садовник</span>
+      </div>
+      <p>© <span id="year"></span> Краб-садовник. Сделано с любовью к морскому дну.</p>
+    </div>
+  </footer>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
